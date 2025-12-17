@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 ColorGen Pro | Generador de Colores</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Partículas de fondo -->
+    <div class="particles-container" id="particles"></div>
+    
+    <!-- Botón modo oscuro -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <!-- Contenido principal -->
+    <div class="container">
+        <!-- Encabezado -->
+        <header class="main-header">
+            <div class="logo">
+                <i class="fas fa-palette"></i>
+                <h1>ColorGen<span>Pro</span></h1>
+            </div>
+            <p class="tagline">Genera, explora y personaliza colores infinitos</p>
+        </header>
+        
+        <!-- Panel principal de color -->
+        <main class="color-panel">
+            <div class="color-preview">
+                <div class="color-visual" id="colorVisual">
+                    <div class="color-overlay">
+                        <div class="color-display" id="colorDisplay"></div>
+                    </div>
+                </div>
+                
+                <div class="color-controls">
+                    <div class="color-header">
+                        <h2 class="color-title" id="colorName">Blue Lagoon</h2>
+                        <div class="color-code-container">
+                            <span class="color-code-label">HEX</span>
+                            <div class="color-code" id="colorCode">
+                                <span>#667EEA</span>
+                                <button class="copy-btn" id="copyHexBtn">
+                                    <i class="far fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-buttons">
+                        <button class="btn generate-btn" id="generateBtn">
+                            <i class="fas fa-random"></i>
+                            <span>Nuevo Color</span>
+                        </button>
+                        
+                        <div class="btn-group">
+                            <button class="btn-icon" id="favoriteBtn" title="Agregar a favoritos">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="btn-icon" id="lockBtn" title="Bloquear color actual">
+                                <i class="far fa-lock"></i>
+                            </button>
+                            <button class="btn-icon" id="shareBtn" title="Compartir color">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Información detallada -->
+                    <div class="color-info-grid">
+                        <div class="info-card">
+                            <div class="info-header">
+                                <i class="fas fa-ruler-combined"></i>
+                                <h3>RGB</h3>
+                            </div>
+                            <div class="info-value" id="rgbValue">rgb(102, 126, 234)</div>
+                            <button class="copy-small" data-target="rgb">Copiar</button>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-header">
+                                <i class="fas fa-circle"></i>
+                                <h3>HSL</h3>
+                            </div>
+                            <div class="info-value" id="hslValue">hsl(228, 76%, 66%)</div>
+                            <button class="copy-small" data-target="hsl">Copiar</button>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-header">
+                                <i class="fas fa-paint-brush"></i>
+                                <h3>CMYK</h3>
+                            </div>
+                            <div class="info-value" id="cmykValue">cmyk(56, 46, 0, 8)</div>
+                            <button class="copy-small" data-target="cmyk">Copiar</button>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-header">
+                                <i class="fas fa-eye-dropper"></i>
+                                <h3>Nombre</h3>
+                            </div>
+                            <div class="info-value" id="colorNameValue">Cornflower Blue</div>
+                            <button class="copy-small" data-target="name">Copiar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Selector manual -->
+            <div class="manual-controls">
+                <h3><i class="fas fa-sliders-h"></i> Ajustes Manuales</h3>
+                <div class="slider-group">
+                    <div class="slider-item">
+                        <label for="hueSlider">Matiz (Hue): <span id="hueValue">228°</span></label>
+                        <input type="range" id="hueSlider" min="0" max="360" value="228" class="slider">
+                    </div>
+                    <div class="slider-item">
+                        <label for="saturationSlider">Saturación: <span id="saturationValue">76%</span></label>
+                        <input type="range" id="saturationSlider" min="0" max="100" value="76" class="slider">
+                    </div>
+                    <div class="slider-item">
+                        <label for="lightnessSlider">Luminosidad: <span id="lightnessValue">66%</span></label>
+                        <input type="range" id="lightnessSlider" min="0" max="100" value="66" class="slider">
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Historial y favoritos -->
+        <div class="sections-container">
+            <!-- Historial -->
+            <section class="history-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-history"></i> Historial Reciente</h2>
+                    <button class="btn-clear" id="clearHistory">
+                        <i class="fas fa-trash"></i> Limpiar
+                    </button>
+                </div>
+                <div class="history-grid" id="historyGrid">
+                    <!-- Los colores se agregarán aquí dinámicamente -->
+                </div>
+            </section>
+            
+            <!-- Favoritos -->
+            <section class="favorites-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-star"></i> Favoritos</h2>
+                    <span class="favorites-count" id="favoritesCount">0 colores</span>
+                </div>
+                <div class="favorites-grid" id="favoritesGrid">
+                    <!-- Los favoritos se agregarán aquí dinámicamente -->
+                </div>
+            </section>
+            
+            <!-- Paletas -->
+            <section class="palettes-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-th-large"></i> Paletas Sugeridas</h2>
+                </div>
+                <div class="palettes-container" id="palettesContainer">
+                    <!-- Las paletas se generarán dinámicamente -->
+                </div>
+            </section>
+        </div>
+        
+        <!-- Atajos de teclado -->
+        <div class="keyboard-shortcuts">
+            <h3><i class="fas fa-keyboard"></i> Atajos de Teclado</h3>
+            <div class="shortcuts-grid">
+                <div class="shortcut-item">
+                    <kbd>Espacio</kbd>
+                    <span>Generar nuevo color</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>C</kbd>
+                    <span>Copiar código HEX</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>F</kbd>
+                    <span>Alternar favorito</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>L</kbd>
+                    <span>Bloquear/desbloquear</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>H</kbd>
+                    <span>Mostrar/ocultar historial</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notificaciones toast -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Modal para compartir -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-share-alt"></i> Compartir Color</h3>
+                <button class="modal-close" id="closeShareModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="share-options">
+                    <div class="share-option">
+                        <div class="share-color-preview" id="shareColorPreview"></div>
+                        <div class="share-details">
+                            <div class="share-code" id="shareColorCode">#667EEA</div>
+                            <div class="share-name" id="shareColorName">Cornflower Blue</div>
+                        </div>
+                    </div>
+                    
+                    <div class="share-buttons">
+                        <button class="share-btn twitter" data-platform="twitter">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </button>
+                        <button class="share-btn facebook" data-platform="facebook">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </button>
+                        <button class="share-btn copy-link" data-platform="link">
+                            <i class="fas fa-link"></i> Copiar Enlace
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
